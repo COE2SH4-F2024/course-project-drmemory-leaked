@@ -5,50 +5,82 @@
 
 objPosArrayList::objPosArrayList()
 {
-    
+    listSize = 0;
+    arrayCapacity = ARRAY_MAX_CAP;
+    aList = new objPos[ARRAY_MAX_CAP];
 }
 
 objPosArrayList::~objPosArrayList()
 {
-
+    delete[] aList;
 }
 
 int objPosArrayList::getSize() const
 {
-
+    return listSize;
 }
 
 void objPosArrayList::insertHead(objPos thisPos)
 {
-    
+    if (listSize == arrayCapacity){
+        return;
+    }
+    for (int i = listSize; i > 0; i--){
+        aList[i] = aList[i-1];
+    }
+    aList[0] =thisPos;
+    listSize++;
 }
 
 void objPosArrayList::insertTail(objPos thisPos)
 {
-    
+    if(listSize == arrayCapacity)
+    {
+        return;
+    }
+
+    //no need to shuffle elements because we are appending the tail to the end of the list where there are assumingly empty spaces.
+    aList[listSize] = thisPos;
+    listSize++; 
 }
 
 void objPosArrayList::removeHead()
 {
-    
+    if (listSize == 0){
+        return;
+    }
+
+    //shift all the elements one position towards the tail so the head can be easily removed
+    for(int i = 0; i<listSize-1; i++){
+        aList[i] = aList[i+1];
+    }
+    listSize--;
 }
 
 void objPosArrayList::removeTail()
 {
-    
+    if (listSize == 0){
+        return;
+    }
+    listSize--;
 }
 
 objPos objPosArrayList::getHeadElement() const
 {
-    
+    return aList[0];
 }
 
 objPos objPosArrayList::getTailElement() const
 {
-    
+    return aList[listSize-1];
 }
 
 objPos objPosArrayList::getElement(int index) const
 {
-    
+    if (index < 0 || index >= listSize)
+    {
+        return objPos();
+    }
+
+    return aList[index];   
 }
